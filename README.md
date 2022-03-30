@@ -40,7 +40,7 @@ with open('path_to_the_xml_file.xml', 'rb') as f:
 
 `SimExp Cracker` can decrypt the `Content` using `Experiment.decrypt`
 
-In order to get the `Content`, you need first capture the package posts to `/ServiceAPI/UpdateRecord`
+In order to get the `Content`, you need first capture the package posted to `/ServiceAPI/UpdateRecord`
 
 To do so, while the Packet Capture Software is running, you could click `submit` button (recommended) or click `close` button and then find the data in your Packet Capture Software.
 

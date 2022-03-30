@@ -2,9 +2,8 @@ import hashlib
 import datetime
 import gzip
 import base64
-from typing import List
-
 import requests
+from typing import AnyStr, List
 from Crypto.Cipher import AES
 
 """
@@ -187,7 +186,7 @@ class Experiment:
         return gzip.compress(gzip_bytes)
 
     @staticmethod
-    def decrypt(salt_data: bytes) -> str:
+    def decrypt(salt_data: AnyStr) -> str:
         salt_data = base64.b64decode(salt_data)
         return Experiment.gzip_decompress(Experiment.bytes_to_gzip(Experiment.seperate(salt_data))).decode('UTF-8')
 

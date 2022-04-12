@@ -15,6 +15,7 @@ run the command below:
 ```sh
 git clone https://github.com/Nova-Noir/SimExp_Cracker.git
 cd SimExp_Cracker
+python -m pip install -r requirements.txt
 ```
 
 # Usage

@@ -41,11 +41,11 @@ with open('path_to_the_xml_file.xml', 'rb') as f:
 
 `SimExp Cracker` can decrypt the `Content` using `Experiment.decrypt`
 
-In order to get the `Content`, you need first capture the package posted to `/ServiceAPI/UpdateRecord`
+In order to get the `Content`, you need first capture the packet posted to `/ServiceAPI/UpdateRecord`
 
 To do so, while the Packet Capture Software is running, you could click `submit` button (recommended) or click `close` button and then find the data in your Packet Capture Software.
 
-You can also get`UserID`、 `LabID`、`RecordID`、`FileName` and `LabName` in this package, which would be useful when you upload.
+You can also get`UserID`、 `LabID`、`RecordID`、`FileName` and `LabName` in this packet, which would be useful when you upload.
 
 ```python
 encrypted_content = 'encrypted_content_here'
@@ -83,5 +83,6 @@ with open('Content.html', 'w') as f:
 
 # How it works?
 
-I'll write a full blog on [my own blog](https://novanoir.moe/).
-
+~~I'll write a full blog on [my own blog](https://novanoir.moe/).~~
+A simple reverse, then removed some noise and got the source.
+Then write the exploit.

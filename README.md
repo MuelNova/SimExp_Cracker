@@ -62,6 +62,24 @@ c = Experiment.encrypt(content)
 r.upload(c)
 ```
 
+## Content
+`SimExp Cracker` can get your experiments content using `Experiment.gen_content`
+
+```python
+with open('Content.html', 'w') as f:
+        cookie = {
+            "ASP.NET_SessionId": "%YOUR_COOKIE_HERE%"
+        }
+        # Method 1
+        f.write(Experiment.get_content(r"Upload\\LabDate\\%LABNAME%\\%FILE_NAME%.xml",
+                                       # make sure the url string has tag r, otherwise you gotta use "\\\\" instead.
+                                       cookie))
+
+        # Method 2
+        r = Experiment('UserID', LabID, 'LabName', RecordID, 'FileName')
+        f.write(r.gen_content(cookie))
+```
+
 # How it works?
 
 I'll write a full blog on [my own blog](https://novanoir.moe/).

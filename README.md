@@ -84,5 +84,7 @@ with open('Content.html', 'w') as f:
 # How it works?
 
 ~~I'll write a full blog on [my own blog](https://novanoir.moe/).~~
-A simple reverse, then removed some noise and got the source.
-Then write the exploit.
+
+A simple reverse. Removed some noise and then got the source.
+Write the exploit then.
+Too easy to write a blog, so just a quick talk here.

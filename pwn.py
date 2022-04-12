@@ -11,10 +11,10 @@ Custom Config Here.
 :cfg: URL: str, You should set it to your own website-url, with no '/' at the end.
                 e.g URL = 'http://aryun.ustcori.com:2333'
 """
-URL = ''
-
+URL = 'http://aryun.ustcori.com:9452'
 
 UPLOAD_API = "/ServiceAPI/UpdateRecord"
+CONTENT_API = "/ReportStudent/SLabStatisticPage/GetLabdateContent"
 
 prime_nums = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103,
               107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223,
@@ -101,7 +101,7 @@ class Experiment:
             key += str1[i]
             key += str2[len(str2) - 1 - i]
         return key.upper().replace("L", ",").replace("B", ".").replace("J", "|").replace("3", "J").replace("1",
-            "L").replace(
+                                                                                                           "L").replace(
             "2", "B").replace(".", "2").replace(",", "1").replace("|", "3")
 
     def upload(self, content: str):
@@ -115,6 +115,7 @@ class Experiment:
             "Content": content,
             "Key": self.gen_key()
         }
+        print(data)
         r = requests.post(URL + UPLOAD_API, data=data, headers=head)
         print(r.status_code, r.content)
 
@@ -125,10 +126,10 @@ class Experiment:
         length = len(byte_list) // 8192
         remains = len(byte_list)
         for i in range(length):
-            data += bytes(Experiment.remove_noise(byte_list[8192*i:8192*(i+1)]))
+            data += bytes(Experiment.remove_noise(byte_list[8192 * i:8192 * (i + 1)]))
             remains -= 8192
         else:
-            data += bytes(Experiment.remove_noise(byte_list[len(byte_list)-remains:]))
+            data += bytes(Experiment.remove_noise(byte_list[len(byte_list) - remains:]))
         return data
 
     @staticmethod
@@ -194,6 +195,28 @@ class Experiment:
     def encrypt(data: bytes) -> str:
         return base64.b64encode(Experiment.confusion(Experiment.gzip_to_bytes(Experiment.gzip_compress(data)))).decode()
 
+    @staticmethod
+    def get_content(LabDateUrl: str, cookies: dict, **kwargs) -> str:
+        return Experiment("Hacker", 0, "Hacker Experiments", 0, 'abc').gen_content(cookies, LabDateUrl, **kwargs)
+
+    def gen_content(self, cookies: dict, url: str = None, **kwargs) -> str:
+        if url is not None:
+            file = url
+        else:
+            file = f"Upload\\\\LabDate\\\\{self.labName}\\\\{self.Filename}"
+        data = {
+            "UserID": self.username,
+            "LABID": self.labID,
+            "USERNAME": self.username,
+            "LABNAME": self.labName,
+            "LabDateUrl": file,
+        }
+        with requests.post(URL + CONTENT_API, data=data, cookies=cookies, **kwargs) as resp:
+            if resp.status_code == 200:
+                return resp.json().get('Data')
+            else:
+                raise ConnectionError(resp.content)
+
 
 if __name__ == '__main__':
     # Upload
@@ -206,4 +229,16 @@ if __name__ == '__main__':
         content = b'content_here'
         encrypted = Experiment.decrypt(content)
         f.write(encrypted)
-        
+    # Content
+    with open('Content.html', 'w') as f:
+        cookie = {
+            "ASP.NET_SessionId": "YOUR_COOKIE_HERE"
+        }
+        # Method 1
+        f.write(Experiment.get_content(r"Upload\\LabDate\\示波器实验.15\\SOME_FILE_HERE.xml",
+                                       # make sure the url string has tag r, otherwise you gotta use "\\\\" instead.
+                                       cookie))
+
+        # Method 2
+        r = Experiment('Username', 359, '示波器实验.15', 114514, 'FileName')
+        f.write(r.gen_content(cookie))

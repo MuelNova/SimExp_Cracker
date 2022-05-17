@@ -88,7 +88,7 @@ class Experiment:
 
     def gen_key(self):
         now = datetime.datetime.now()
-        token = self.username + "," + str(self.labID) + self.Filename
+        token = f"{self.username},{str(self.labID)}{self.Filename}"
         str1 = hashlib.md5(token.encode()).digest()[4:8].hex().upper()
 
         another_time = datetime.datetime(2001, 10, 18, 9, 50, 0)
@@ -121,15 +121,14 @@ class Experiment:
 
     @staticmethod
     def seperate(saltdata: bytes) -> bytes:
-        byte_list = [i for i in saltdata]
+        byte_list = list(saltdata)
         data = b''
         length = len(byte_list) // 8192
         remains = len(byte_list)
         for i in range(length):
             data += bytes(Experiment.remove_noise(byte_list[8192 * i:8192 * (i + 1)]))
             remains -= 8192
-        else:
-            data += bytes(Experiment.remove_noise(byte_list[len(byte_list) - remains:]))
+        data += bytes(Experiment.remove_noise(byte_list[len(byte_list) - remains:]))
         return data
 
     @staticmethod
@@ -144,15 +143,14 @@ class Experiment:
 
     @staticmethod
     def confusion(data: bytes) -> bytes:
-        byte_list = [i for i in data]
+        byte_list = list(data)
         length = len(byte_list) // 7164
         remains = len(byte_list)
         data = b''
         for i in range(length):
             data += bytes(Experiment.add_noise(byte_list[7164 * i:7164 * (i + 1)]))
             remains -= 7164
-        else:
-            data += bytes(Experiment.add_noise(byte_list[len(byte_list) - remains:]))
+        data += bytes(Experiment.add_noise(byte_list[len(byte_list) - remains:]))
         return data
 
     @staticmethod

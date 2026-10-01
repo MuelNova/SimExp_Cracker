@@ -120,7 +120,7 @@ class Experiment:
         print(r.status_code, r.content)
 
     @staticmethod
-    def seperate(saltdata: bytes) -> bytes:
+    def separate(saltdata: bytes) -> bytes:
         byte_list = list(saltdata)
         data = b''
         length = len(byte_list) // 8192
@@ -187,7 +187,7 @@ class Experiment:
     @staticmethod
     def decrypt(salt_data: AnyStr) -> str:
         salt_data = base64.b64decode(salt_data)
-        return Experiment.gzip_decompress(Experiment.bytes_to_gzip(Experiment.seperate(salt_data))).decode('UTF-8')
+        return Experiment.gzip_decompress(Experiment.bytes_to_gzip(Experiment.separate(salt_data))).decode('UTF-8')
 
     @staticmethod
     def encrypt(data: bytes) -> str:
